@@ -18,7 +18,7 @@ The XSB-JS-Interface library is a Web Assembly port of the XSB C Interface. The 
 
 **1**. Copy all files inside `./out` into your project's directory
 
-**2**. Inside your webpage, import `xsbInterpreter.js`
+**2**. Inside your webpage, import `xsbInterface.js`
 
 ```html
 <script src="xsbInterpreter.js"></script>
