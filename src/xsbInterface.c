@@ -27,10 +27,10 @@ int _xsb_close()
 /**
  * Streight call to xsb_command_string()
  */
- int _xsb_command_string(char* command)
- {
-	 return xsb_command_string(command);
- }
+int _xsb_command_string(char* command)
+{
+	return xsb_command_string(command);
+}
 
 /**
  * Streight call to _xsb_query_string_string_b()
