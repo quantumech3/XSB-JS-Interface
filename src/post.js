@@ -171,6 +171,8 @@ XSB.execute = function(command)
 	while(nextResultElem = XSB.LowLevel.xsb_next_string_b(200, ", "))
 		result.push(nextResultElem);
 
+	XSB.LowLevel.xsb_close_query()
+
 	return result
 }
 
@@ -181,6 +183,10 @@ XSB.execute = function(command)
  */
 XSB.init = function()
 {
-	if(XSB.LowLevel.xsb_init_string("/"))
-		throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_init_error_message()
+	// Delay 1 second before starting XSB to assure that these wrapper functions dont get called before Emscripten Initializes
+	setTimeout(function()
+	{
+		if(XSB.LowLevel.xsb_init_string("/"))
+			throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_init_error_message()
+	}, 1000)	
 }
