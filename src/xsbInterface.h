@@ -7,16 +7,17 @@
 
 #include <stdio.h>
 #include <cinterf.h>
+#include <stdlib.h>
 #include <emscripten.h>
 
 EMSCRIPTEN_KEEPALIVE
 int _xsb_command_string(char*); //
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_query_string_string_b(char*,char*,int,int*,char*); //
+int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep); //
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_next_string_b(char*,int,int*,char*); //
+int _xsb_next_string_b(int maxAnswerLength, char* sep); //
 
 EMSCRIPTEN_KEEPALIVE
 int _xsb_close_query(); //

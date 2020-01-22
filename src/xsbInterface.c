@@ -33,19 +33,42 @@ int _xsb_command_string(char* command)
 }
 
 /**
- * Streight call to _xsb_query_string_string_b()
+ * Calls xsb_query_string_string_b(), gets the answerLength, and returns a pointer to the query result
  */
-int _xsb_query_string_string_b(char* a, char* b, int c, int* d, char* e)
+int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep)
 {
-	return xsb_query_string_string_b(a, b, c, d, e);
+	// Will be set to the actual length of the queries answer
+	int answerLength = 0;
+
+	// Buffer containing output
+	char* outputBuffer = calloc(maxAnswerLength, 1);
+
+	// Query XSB
+	xsb_query_string_string_b(query, outputBuffer, maxAnswerLength, &answerLength, sep);
+
+	// Add null terminator at end of answer
+	outputBuffer[answerLength] = '\0';
+
+	return (int)outputBuffer;
 }
 
 /**
  * Streight call to _xsb_next_string_b()
  */
-int _xsb_next_string_b(char* a, int b, int* c, char* d)
+int _xsb_next_string_b(int maxAnswerLength, char* sep)
 {
-	return xsb_next_string_b(a, b, c, d);
+	// Will be set to the actual length of the queries answer
+	int answerLength = 0;
+
+	// Buffer containing output
+	char* outputBuffer = calloc(maxAnswerLength, 1);
+
+	xsb_next_string_b(outputBuffer, maxAnswerLength, &answerLength, sep);
+
+	// Add null terminator at end of answer
+	outputBuffer[answerLength] = '\0';
+
+	return (int)outputBuffer;
 }
 
 /**
@@ -67,7 +90,6 @@ char* _xsb_get_init_error_message()
 /**
  * Streight call to _xsb_get_error_message()
  */
-EMSCRIPTEN_KEEPALIVE
 char* _xsb_get_error_message()
 {
 	return xsb_get_error_message();

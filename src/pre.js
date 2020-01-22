@@ -13,10 +13,26 @@
 */
 
 // Create empty XSB structure in global scope
+// All attributes will be overloaded in either pre.js or post.js
 var XSB = 
 {
-	Events: {},
-	LowLevel: {}
+	Events: 
+	{
+		onOutput: function(output, isError){}
+	},
+	LowLevel: 
+	{
+		xsb_command_string: function(command){}, //
+		xsb_query_string_string_b: function(command, maxAnswerLength, seperator){},
+		xsb_init_string: function(path){}, //
+		xsb_next_string_b: function(maxAnswerLength, seperator){},
+		xsb_close_query: function(){}, //
+		xsb_close: function(){}, //
+		xsb_get_init_error_message: function(){},
+		xsb_get_error_message: function(){}
+	},
+	execute: function(command){},
+	init: function(){}
 }
 
 /**
