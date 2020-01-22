@@ -48,7 +48,7 @@ XSB.Events.onOutput = function(output, isError)
 // Tell XSB Interpreter to calculuate and return the values of X and Y
 // XSB.execute() is a high-level method that executes a command and returns the results as a string[]
 // A query 'member(X, [0, 1]), member(Y, [2, 3]).' made using XSB.execute() would return the following elements:
-// ["0 2", "0 3", "1 2", "1 3"]
+// ["0, 2", "0, 3", "1, 2", "1, 3"]
 // In this case, XSB.execute() will return ["1, 2"]
 XSB.execute("X is 1, Y is 1+1.")
 
