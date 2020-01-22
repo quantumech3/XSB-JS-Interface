@@ -21,7 +21,7 @@ The XSB-JS-Interface library is a Web Assembly port of the XSB C Interface. The 
 **2**. Inside your webpage, import `xsbInterface.js`
 
 ```html
-<script src="xsbInterpreter.js"></script>
+<script src="xsbInterface.js"></script>
 ```
 
 **3**. Thats it! It's that easy! 🕶✌
