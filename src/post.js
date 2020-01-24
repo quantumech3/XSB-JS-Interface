@@ -164,14 +164,18 @@ XSB.execute = function(command)
 	result.push(XSB.LowLevel.xsb_query_string_string_b(command, 200, ", "));
 
 	// Throw exception is XSB threw an exception when trying to execute a command
-	if((err = XSB.LowLevel.xsb_get_error_message()) !== "")
-		throw "XSB-JS-INTERFACE ERROR: " + err
+	if(XSB.LowLevel.xsb_get_error_message())
+		throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_error_message()
 
 	// Keep pushing query results to 'result' until there are no more results to pull
 	while(nextResultElem = XSB.LowLevel.xsb_next_string_b(200, ", "))
-		result.push(nextResultElem);
+	{
+		// Throw exception is XSB threw an exception when trying to get next element
+		if(XSB.LowLevel.xsb_get_error_message())
+			throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_error_message()
 
-	XSB.LowLevel.xsb_close_query()
+		result.push(nextResultElem);
+	}
 
 	return result
 }

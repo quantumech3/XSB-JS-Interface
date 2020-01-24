@@ -43,11 +43,14 @@ int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep)
 	// Buffer containing output
 	char* outputBuffer = calloc(maxAnswerLength, 1);
 
-	// Query XSB
-	xsb_query_string_string_b(query, outputBuffer, maxAnswerLength, &answerLength, sep);
-
-	// Add null terminator at end of answer
-	outputBuffer[answerLength] = '\0';
+	// Query XSB and return error message if another query was open while this query was being called
+	if(xsb_query_string_string_b(query, outputBuffer, maxAnswerLength, &answerLength, sep) == XSB_ERROR)
+		outputBuffer = "XSB-JS_INTERFACE ERROR: Tried to create new query while an old query was open\0";
+	else
+	{
+		// Add null terminator at end of answer
+		outputBuffer[answerLength] = '\0';
+	}
 
 	return (int)outputBuffer;
 }
