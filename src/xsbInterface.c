@@ -13,7 +13,8 @@
  */
 int _xsb_init_string(char* path)
 {
-	return xsb_init_string(path);
+	status = xsb_init_string(path);
+	return status;
 }
 
 /**
@@ -21,7 +22,8 @@ int _xsb_init_string(char* path)
  */
 int _xsb_close()
 {
-	return xsb_close();
+	status = xsb_close();
+	return status;
 }
 
 /**
@@ -29,7 +31,8 @@ int _xsb_close()
  */
 int _xsb_command_string(char* command)
 {
-	return xsb_command_string(command);
+	status = xsb_command_string(command);
+	return status;
 }
 
 /**
@@ -44,7 +47,8 @@ int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep)
 	char* outputBuffer = calloc(maxAnswerLength, 1);
 
 	// Query XSB and return error message if another query was open while this query was being called
-	if(xsb_query_string_string_b(query, outputBuffer, maxAnswerLength, &answerLength, sep) == XSB_ERROR)
+	status = xsb_query_string_string_b(query, outputBuffer, maxAnswerLength, &answerLength, sep);
+	if(status == XSB_ERROR)
 		outputBuffer = "XSB-JS_INTERFACE ERROR: Tried to create new query while an old query was open\0";
 	else
 	{
@@ -66,7 +70,7 @@ int _xsb_next_string_b(int maxAnswerLength, char* sep)
 	// Buffer containing output
 	char* outputBuffer = calloc(maxAnswerLength, 1);
 
-	xsb_next_string_b(outputBuffer, maxAnswerLength, &answerLength, sep);
+	status = xsb_next_string_b(outputBuffer, maxAnswerLength, &answerLength, sep);
 
 	// Add null terminator at end of answer
 	outputBuffer[answerLength] = '\0';
@@ -79,7 +83,8 @@ int _xsb_next_string_b(int maxAnswerLength, char* sep)
  */
 int _xsb_close_query()
 {
-	return xsb_close_query();
+	status = xsb_close_query();
+	return status;
 }
 
 /**
@@ -96,4 +101,12 @@ char* _xsb_get_init_error_message()
 char* _xsb_get_error_message()
 {
 	return xsb_get_error_message();
+}
+
+/**
+ * Returns the status code obtained from the last XSB function call
+ **/
+int _status()
+{
+	return status;
 }

@@ -11,25 +11,32 @@
 #include <emscripten.h>
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_command_string(char*); //
+int _xsb_command_string(char*);
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep); //
+int _xsb_query_string_string_b(char* query, int maxAnswerLength, char* sep);
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_next_string_b(int maxAnswerLength, char* sep); //
+int _xsb_next_string_b(int maxAnswerLength, char* sep);
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_close_query(); //
+int _xsb_close_query();
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_close(); // 
+int _xsb_close();
 
 EMSCRIPTEN_KEEPALIVE
-int _xsb_init_string(char*); //
+int _xsb_init_string(char*);
 
 EMSCRIPTEN_KEEPALIVE
-char* _xsb_get_init_error_message(); // 
+char* _xsb_get_init_error_message();
 
 EMSCRIPTEN_KEEPALIVE
 char* _xsb_get_error_message();
+
+EMSCRIPTEN_KEEPALIVE
+int _status();
+
+// Contains the status code returned from the most recent XSB C Interface function call
+// Used by _status() as a way to relay XSB C interface return codes to JS
+int status;

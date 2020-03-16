@@ -13,6 +13,10 @@
 * 			* string xsb_get_init_error_message(): Returns error message resulting from XSB initialization such an error occured, else returns an empty string
 * 			* bool xsb_init_string(string path): Attempts to initialize the XSB runtime with its root directory located at 'path' in Emscripten's File System. 
 * 			* string xsb_get_error_message(): Returns error message resulting from an XSB query if such an error occured, else returns an empty string
+*			* int status(): Returns the status code obtained by the last XSB C interface function call
+*				* XSB_SUCCESS = 0
+*				* XSB_FAIL = 1
+*				* XSB_ERROR = 2
 * 		
 * 		* string[] XSB.execute(String command): Top-level method. Executes the XSB command 'command' and returns the result/s from that command as a string[]
 * 												if such result exist, else returns an empty string array.
@@ -150,6 +154,17 @@ XSB.LowLevel.xsb_command_string = function(command)
 }
 
 /**
+ * Returns the status code obtained by the last XSB C interface function call
+ * 		* XSB_SUCCESS = 0
+ *		* XSB_FAIL = 1
+ *		* XSB_ERROR = 2
+ */
+XSB.LowLevel.status = function()
+{
+	return __status()
+}
+
+/**
 * Top-level method. Executes the XSB command 'command' and returns the result/s from that command as a string[]
 * 												if such result exist, else returns an empty string array.
 * 												For example:
@@ -194,3 +209,4 @@ XSB.init = function()
 			throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_init_error_message()
 	}, 1000)	
 }
+

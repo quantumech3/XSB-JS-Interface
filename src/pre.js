@@ -29,7 +29,8 @@ var XSB =
 		xsb_close_query: function(){}, //
 		xsb_close: function(){}, //
 		xsb_get_init_error_message: function(){},
-		xsb_get_error_message: function(){}
+		xsb_get_error_message: function(){},
+		status: function(){}
 	},
 	execute: function(command){},
 	init: function(){}
