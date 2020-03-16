@@ -45,7 +45,7 @@ XSB.Events.onOutput = function(output, isError)
     console.log(output)
 }
 
-// Tell XSB Interpreter to calculuate and return the values of X and Y
+// Tell XSB Interpreter to calculate and return the values of X and Y
 // XSB.execute() is a high-level method that executes a command and returns the results as a string[]
 // A query 'member(X, [0, 1]), member(Y, [2, 3]).' made using XSB.execute() would return the following elements:
 // ["0, 2", "0, 3", "1, 2", "1, 3"]
@@ -55,6 +55,11 @@ XSB.execute("X is 1, Y is 1+1.")
 // Print "Hello world" using a low-level method ported directly from the C Interface
 // Other directly-ported methods from the XSB C Interface reside inside the 'LowLevel' section of the XSB-JS-Interface library as well.
 XSB.LowLevel.xsb_command_string("writeln('Hello world').")
+
+// Get the latest status code from XSB
+// Returns the latest status code from the latest XSB function call
+// For example, if xsb_command_string() returned false, then XSB.LowLevel.status() would return false until the next function call
+XSB.LowLevel.status()
 ```
 	
 
