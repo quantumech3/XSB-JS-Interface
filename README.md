@@ -58,7 +58,7 @@ XSB.LowLevel.xsb_command_string("writeln('Hello world').")
 
 // Get the latest status code from XSB
 // Returns the latest status code from the latest XSB function call
-// For example, if xsb_command_string() returned false, then XSB.LowLevel.status() would return false until the next function call
+// For example, if xsb_command_string() returned XSB_SUCCESS, then XSB.LowLevel.status() would return 0 until the next function call
 XSB.LowLevel.status()
 ```
 	
