@@ -18,11 +18,18 @@
 *				* XSB_FAIL = 1
 *				* XSB_ERROR = 2
 * 		
-* 		* string[] XSB.execute(String command): Top-level method. Executes the XSB command 'command' and returns the result/s from that command as a string[]
-* 												if such result exist, else returns an empty string array.
-* 												For example:
-* 													A query 'member(X, [0, 1]), member(Y, [2, 3]).' made using XSB.execute() would return the following elements:
-* 																["0, 2", "0, 3", "1, 2", "1, 3"]
+* 		* string[] XSB.execute(String command): Top-level method. Executes the XSB command 'command' and returns the result/s from that command as the following structure:		
+*			{
+*				var: [
+*					["val1 from var0 query", ..],
+*					["val2 from var1 query", ..]
+*				],
+*				isTrue: IF results were able to be queried:
+*							return boolean corrosponding to status() after the last query attempt
+*						ELSE
+*							return boolean corrosponding to status() before the first query attempt
+*			}
+* 			Details about the usage of this method are in the README for this repository
 *
 *		* void XSB.init(): Initializes XSB. This method will throw an error if either											
 * 																XSB fails to initialize											
