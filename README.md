@@ -45,12 +45,35 @@ XSB.Events.onOutput = function(output, isError)
     console.log(output)
 }
 
-// Tell XSB Interpreter to calculate and return the values of X and Y
-// XSB.execute() is a high-level method that executes a command and returns the results as a string[]
-// A query 'member(X, [0, 1]), member(Y, [2, 3]).' made using XSB.execute() would return the following elements:
-// ["0, 2", "0, 3", "1, 2", "1, 3"]
-// In this case, XSB.execute() will return ["1, 2"]
-XSB.execute("X is 1, Y is 1+1.")
+// Tell XSB to execute "X is 6, Y is 6, X == Y."
+// XSB.execute returns a structure containing return values resulting from the xsb query:
+// XSB.execute("X is 6, Y is 6, X == Y.") should return the following
+//	{
+//		var:	[
+//				["6"],
+//				["6"]
+//			],
+//		isTrue:
+//			true
+//	}
+//
+// In general, XSB.execute() returns the following:
+//{
+//	var: [
+//		["val1 from var0 query", ..], // Array containing query results of var1. The Nth result maps to the N-1th index
+//		["val2 from var1 query", ..]  // Array containing query results of var2. The Nth result maps to the N-1th index
+		..			      // Variables are ordered in the same way that they are ordered in the query. 
+		..			      // For example, in the query "X is 5, Y is 6.", 'var' would be [["5"], ["6"]]
+//	],
+//	isTrue: Boolean // Returns 'true' for any query where XSB would return 'yes.', else returns false
+//}
+result = XSB.execute("X is 6, Y is 6, X == Y.")
+console.log("Values of X: " + result.var[0].toString())
+console.log("Values of Y: " + result.var[1].toString())
+if(result.isTrue)
+	console.log("The query returned true.")
+else
+	console.log("The query returned false.")
 
 // Print "Hello world" using a low-level method ported directly from the C Interface
 // Other directly-ported methods from the XSB C Interface reside inside the 'LowLevel' section of the XSB-JS-Interface library as well.
