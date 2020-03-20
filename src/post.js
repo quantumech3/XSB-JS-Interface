@@ -172,31 +172,83 @@ XSB.LowLevel.status = function()
 }
 
 /**
-* Top-level method. Executes the XSB command 'command' and returns the result/s from that command as a string[]
-* 												if such result exist, else returns an empty string array.
-* 												For example:
-* 													A query 'member(X, [0, 1]), member(Y, [2, 3]).' made using XSB.execute() would return the following elements:
-* 																["0, 2", "0, 3", "1, 2", "1, 3"]
- */
+* Top-level method. Executes the XSB command 'command' and returns the result/s as the following structure:
+*	{
+*		var: [["var0 value0", "var0 value1, .."], ["var1 value0", "var1 value1, .."], ..],
+*		isTrue: True or false depending on whether XSB would return 'yes.' or 'no.' for this query
+*	}
+*/
 XSB.execute = function(command)
 {
-	let result = [];
-
-	// Execute the user's command and push the first command result to 'result'
-	result.push(XSB.LowLevel.xsb_query_string_string_b(command, 200, ", "));
-
-	// Throw exception is XSB threw an exception when trying to execute a command
-	if(XSB.LowLevel.xsb_get_error_message())
-		throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_error_message()
-
-	// Keep pushing query results to 'result' until there are no more results to pull
-	while(nextResultElem = XSB.LowLevel.xsb_next_string_b(200, ", "))
+	let result = 
 	{
-		// Throw exception is XSB threw an exception when trying to get next element
-		if(XSB.LowLevel.xsb_get_error_message())
-			throw "XSB-JS-INTERFACE ERROR: " + XSB.LowLevel.xsb_get_error_message()
+		var: [],
+		isTrue: false
+	}
 
-		result.push(nextResultElem);
+	// Convert XSB.status() to associated boolean. XSB_SUCCESS = 0 -> True, 
+	//											   XSB_FAIL = 1 -> False
+	//											   Other values -> other values
+	let xsbStatusToBool = function(status)
+	{
+		switch (status) 
+		{
+			case 0:
+				return true;
+			case 1:
+				return false;
+			default:
+				return status
+		}
+	}
+
+	// Parse 1 permutation of an XSB variable string resulting from a query and append each value to the appropriate index in result.var[]
+	let appendToResult = function(rawResult="", seperator="")
+	{
+		splitResult = rawResult.split(seperator)
+
+		// Append query values to respective variable indices in result.var
+		for(let i = 0; i < splitResult.length; i++)
+		{
+			// If an array has not been instantiated for the ith variable, instantiate it
+			if(!result.var[i])
+				result.var[i] = []
+
+			// Push query result to element in result.var corrrosponding to the variable
+			result.var[i].push(splitResult[i])
+		}
+	}
+
+	// If result from first query is not ""
+	if(initResult = XSB.LowLevel.xsb_query_string_string_b(command, 200, ","))
+	{
+		// If XSB throws error
+		if(error = XSB.LowLevel.xsb_get_error_message())
+			throw "XSB-JS-INTERFACE ERROR: " + error
+
+		// Append variable values to result.var[]
+		appendToResult(initResult, ',')
+
+		// While there are values to query
+		while(nextResult = XSB.LowLevel.xsb_next_string_b(200, ','))
+		{
+			if(error = XSB.LowLevel.xsb_get_error_message())
+				throw "XSB-JS-INTERFACE ERROR: " + error
+
+			// Append variable values to result.var[]
+			appendToResult(nextResult, ',')
+		}
+
+		// result.isTrue = True or false depending on XSB.status()
+		result.isTrue = xsbStatusToBool(XSB.LowLevel.status())
+	}
+	else
+	{
+		// result.isTrue = True or false depending on XSB.status()
+		result.isTrue = xsbStatusToBool(XSB.LowLevel.status())
+
+		// Close XSB query
+		XSB.LowLevel.xsb_close_query();
 	}
 
 	return result
