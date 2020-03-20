@@ -230,8 +230,12 @@ XSB.execute = function(command)
 		appendToResult(initResult, ',')
 
 		// While there are values to query
+		let _status = [xsbStatusToBool(XSB.LowLevel.status()), xsbStatusToBool(XSB.LowLevel.status())]
 		while(nextResult = XSB.LowLevel.xsb_next_string_b(200, ','))
 		{
+			_status.shift()
+			_status[1] = xsbStatusToBool(XSB.LowLevel.status())
+
 			if(error = XSB.LowLevel.xsb_get_error_message())
 				throw "XSB-JS-INTERFACE ERROR: " + error
 
@@ -240,7 +244,7 @@ XSB.execute = function(command)
 		}
 
 		// result.isTrue = True or false depending on XSB.status()
-		result.isTrue = xsbStatusToBool(XSB.LowLevel.status())
+		result.isTrue = _status[0]
 	}
 	else
 	{
